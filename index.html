@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Create Your Own Website</title>
+
+  <script src="js.js"></script>
+  <link rel="stylesheet" href="desktop.css" />
+  <!-- Mobile CSS -->
+  <link rel="stylesheet" href="mobile.css" media="(max-width: 767px)" />
+
+  <style>
+    /* Lightbox overlay */
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #000;
+    }
+
+    .lightbox-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.3);
+      border: none;
+      font-size: 48px;
+      color: white;
+      cursor: pointer;
+      padding: 8px 14px;
+      z-index: 10000;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+
+    .lightbox-arrow:hover {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .lightbox-arrow.left {
+      left: 30px;
+    }
+
+    .lightbox-arrow.right {
+      right: 30px;
+    }
+    .lightbox-arrow.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+  </style>
+ <nav>
+    <div class="navbar">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li id="worksTab">
+          <a href="javascript:void(0)">Students' Works ▾</a>
+          <div class="dropdown">
+                        <a href="student1.html">Leezan</a>
+                        <a href="https://melodic-elf-9d2335.netlify.app/">Pengkuang</a>
+                        <a href="https://celebrated-caramel-5ee200.netlify.app/">Dod</a>
+                        <a href="student4.html">Soba</a>
+                        <a href="https://endearing-treacle-da7173.netlify.app/">Khao</a>
+                        <a href="https://merry-sunflower-f909dc.netlify.app/">Acare</a>
+                        <a href="student7.html">Mirin</a>
+                        <a href="https://nanette.netlify.app/">Pang</a>
+                        <a href="student9.html">Kaopoad</a>
+                        <a href="https://how2bake.netlify.app/">Pear</a>
+          </div>
+        </li>
+        <li><a href="scores.html">Scores</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <script>
+    const worksTab = document.getElementById('worksTab');
+
+    worksTab.addEventListener('click', function () {
+      if (window.innerWidth <= 768) {
+        this.classList.toggle('active');
+      }
+    });
+  </script>
+
+</head>
+<body>
+  <header>
+    <h1>Create your own website using chat GPT</h1>
+  </header>
+
+  <main>
+    <p class = "intro">
+      This website will show you how easy it is to create your own website using chat GPT.
+      The key is to give it the detailed prompt, explaining exactly what you want it to do for you.
+    </p>
+
+    <h2 class="centered-sign">Different website design options</h2>
+
+    <section class="lightboxes">
+      <img src="1.webp" alt="Design Style 1" class="expandable" />
+      <img src="2.webp" alt="Design Style 2" class="expandable" />
+      <img src="3.webp" alt="Design Style 3" class="expandable" />
+      <img src="4.webp" alt="Design Style 4" class="expandable" />
+      <img src="5.webp" alt="Design Style 5" class="expandable" />
+      <img src="6.webp" alt="Design Style 6" class="expandable" />
+    </section>
+    <div class = "prompt">
+        <h2>Prompt template</h2>
+        <p>
+        Write html code for simple 1 page website.<br>
+        Header&nbsp;&nbsp;_____ (write what content you want here)<br>
+        Main part_____ (write what content you want here, if you have photos, write the names of the photo files, e.g. Photo1.jpg)<br>
+        Footer&nbsp;&nbsp;- “Mathayomwatsing school, 2025. All rights reserved”<br><br>
+
+        CSS (styling):<br>
+        Header – _____ (describe color you want) padding 20px top and bottom<br>
+        Main part – _____ (describe color you want) padding left and right 5%, add red lines and indentation between lines<br>
+        Footer – _____ (describe color you want) padding 15px top and bottom<br>
+        Whole page: sans-serif font. Headers should be size 26, centered. Regular text – 18, justified alignment. Do not ever use &lt;pre&gt;<br><br>
+
+        Add style tag for css, for computers and for mobiles. 
+        </p>
+
+    </div>
+  </main>
+
+  <footer>
+Mathayomwatsing school &copy; 2025
+  </footer>
+
+  <!-- Lightbox overlay -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-arrow left" id="prev">&#10094;</button>
+    <img src="" alt="Full-size image" id="lightbox-img" />
+    <button class="lightbox-arrow right" id="next">&#10095;</button>
+  </div>
+
+<script>
+  const overlay = document.getElementById('lightbox');
+  const overlayImg = document.getElementById('lightbox-img');
+  const images = Array.from(document.querySelectorAll('.expandable'));
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+
+  let currentIndex = 0;
+  let arrowTimeout;
+
+  function showImage(index) {
+    overlayImg.src = images[index].src;
+    overlay.classList.add('active');
+    currentIndex = index;
+    showArrowsTemporarily();
+  }
+
+  function showArrowsTemporarily() {
+    prevBtn.classList.remove('hidden');
+    nextBtn.classList.remove('hidden');
+
+    clearTimeout(arrowTimeout);
+    arrowTimeout = setTimeout(() => {
+      prevBtn.classList.add('hidden');
+      nextBtn.classList.add('hidden');
+    }, 3000);
+  }
+
+  function handleMouseMove(e) {
+    const x = e.clientX;
+    const width = window.innerWidth;
+    const edgeMargin = 100;
+
+    // Left side
+    if (x < edgeMargin) {
+      prevBtn.classList.remove('hidden');
+    } else {
+      prevBtn.classList.add('hidden');
+    }
+
+    // Right side
+    if (x > width - edgeMargin) {
+      nextBtn.classList.remove('hidden');
+    } else {
+      nextBtn.classList.add('hidden');
+    }
+  }
+
+  images.forEach((img, index) => {
+    img.classList.add('expandable');
+    img.addEventListener('click', () => showImage(index));
+  });
+
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    showImage(currentIndex);
+  });
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    currentIndex = (currentIndex + 1) % images.length;
+    showImage(currentIndex);
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') overlay.classList.remove('active');
+    if (e.key === 'ArrowLeft') prevBtn.click();
+    if (e.key === 'ArrowRight') nextBtn.click();
+  });
+
+  overlay.addEventListener('mousemove', handleMouseMove);
+</script>
+
+</body>
+</html>
